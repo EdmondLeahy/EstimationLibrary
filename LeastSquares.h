@@ -57,6 +57,9 @@ public:
 	MatrixXd getRho();
 	MatrixXd getErrorEllipse();
 	MatrixXd getSemiAxis();
+	double getTol();
+	double getIter();
+
 
 	//ENGO419 Lab2 necessities
 	double computeRank(MatrixXd &R);

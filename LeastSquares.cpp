@@ -413,7 +413,8 @@ double LeastSquares::computeNorm(MatrixXd & M)
 
 double LeastSquares::computeCondition(MatrixXd & M)
 {
-	double cond = computeNorm(M) * computeNorm(computeInverse(M));
+	MatrixXd inv_M = computeInverse(M);
+	double cond = computeNorm(M) * computeNorm(inv_M);
 	return cond;
 }
 
@@ -521,8 +522,8 @@ void LeastSquares::dataSnoop()
 		}
 		//We need to check the correlations
 		rho = MatrixXd::Zero(blunders.size(), blunders.size());
-		for (int j = 0; j < blunders.size(); j++) {
-			for (int k = 0; k < blunders.size(); k++) {
+		for (int j = 0; j < int(blunders.size()); j++) {
+			for (int k = 0; k < int(blunders.size()); k++) {
 				rho(j, k) = Qv(j, k) / (sqrt(Qv(j, j))*sqrt(Qv(k, k)));
 				if (rho(j, k) > 1.0*pow(10, -4) && rho(j, k) < 1) { cout << "The "; }
 			}
@@ -543,6 +544,14 @@ void LeastSquares::computeA()
 {
 	//This must be written before running the program. 
 	//This is not a general fuction
+}
+
+double LeastSquares::getTol() {
+	return tol;
+}
+
+double LeastSquares::getIter() {
+	return num_iter;
 }
 
 void LeastSquares::updateCoords()
