@@ -10,6 +10,7 @@ LeastSquares::LeastSquares()
 	clear();
 	isdebug = false;
 	isquiet = false;
+	aprior = 1;
 }
 void LeastSquares::clear()
 {
@@ -59,6 +60,16 @@ void LeastSquares::setL(const VectorXd & l_temp)
 void LeastSquares::setX0(const VectorXd & x0_temp)
 {
 	x0 = x0_temp;
+}
+
+
+void LeastSquares::setX0(double x, double y, double z, double te)
+{
+	x0.resize(4);
+	x0(0) = x;
+	x0(1) = y;
+	x0(2) = z;
+	x0(3) = te;
 }
 
 void LeastSquares::setxh(const VectorXd & xh_temp)
@@ -223,6 +234,21 @@ void LeastSquares::computeLS()
 	computeCxh();
 	updateObservations();
 
+	if (isquiet != true && isdebug) {
+		//TESTING
+		cout << "L:\n" << l << endl;
+		cout << "v:\n" << v << endl;
+		cout << "Fx:\n" << fx << endl;
+		cout << "d:\n" << d << endl;
+		cout << "w:\n" << w << endl;
+		cout << "A:\n" << A << endl;
+		cout << "P:\n" << P << endl;
+		cout << "Cl:\n" << Cl << endl;
+		cout << "N:\n" << N << endl;
+		cout << "U:\n" << U << endl;
+		cout << "n: " << n << endl;
+		cout << "u: " << u << endl;
+	}
 	cout << "FINISHED\n";
 
 }
@@ -471,6 +497,7 @@ void LeastSquares::computeDelta()
 	computeN();
 	computeU();
 	d = -1 * Ni * U;
+
 }
 
 
@@ -559,6 +586,25 @@ void LeastSquares::updateCoords()
 	//This must be written before running the program. 
 	//This is not a general fuction
 }
+
+double LeastSquares::dist(double xi, double yi, double xj, double yj)
+{
+	double dist = sqrt(pow(xi - xj, 2) + pow(yi - yj, 2));
+	return dist;
+}
+
+double LeastSquares::dist(double i, double j)
+{
+	double dist = sqrt(pow(i, 2) + pow(j, 2));
+	return dist;
+}
+
+double LeastSquares::dist(double xi, double yi, double zi, double xj, double yj, double zj)
+{
+	double dist = sqrt(pow(xi - xj, 2) + pow(yi - yj, 2) + pow(zi - zj, 2));
+	return dist;
+}
+
 void LeastSquares::computeErrorEllipse(MatrixXd Cx_error)
 {
 	ellipseOrientation = MatrixXd::Zero(2, 2);

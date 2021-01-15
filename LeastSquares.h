@@ -30,6 +30,7 @@ public:
 	void setAPrior(double prior);
 	void setL(const VectorXd & l_temp);
 	void setX0(const VectorXd & x0_temp);
+	void setX0(double x, double y, double z, double te);
 	void setxh(const VectorXd & xh_temp);
 	void setCl(const MatrixXd & Cl_diag);
 	void setP(const VectorXd diag_p);
@@ -59,6 +60,12 @@ public:
 	MatrixXd getSemiAxis();
 	double getTol();
 	double getIter();
+
+	//distance
+
+	double dist(double xi, double yi, double zi, double xj, double yj, double zj);
+	double dist(double xi, double yi, double xj, double yj);
+	double dist(double i, double j);
 
 
 	//ENGO419 Lab2 necessities
@@ -90,6 +97,7 @@ public:
 	std::map<char, int>::iterator it;
 	MatrixXd A, Cl, P, N, U, Ni, errorEllipse, ellipseOrientation, rho;
 	VectorXd l, lh, x0, xh, fx, d, w, v;
+	bool isquiet, isdebug;
 
 protected:
 
@@ -100,7 +108,6 @@ private:
 
 	int num_iter, n, u, r;
 	double tol, aprior, apost, localSnoopConf, globalSnoopConf;
-	bool isquiet, isdebug;
 
 	
 	MatrixXd Clh, Cxh, Cvh, y;
