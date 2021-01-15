@@ -97,7 +97,7 @@ public:
 	std::map<char, int>::iterator it;
 	MatrixXd A, Cl, P, N, U, Ni, errorEllipse, ellipseOrientation, rho;
 	VectorXd l, lh, x0, xh, fx, d, w, v;
-	bool isquiet, isdebug;
+	bool isquiet, isdebug, snoop;
 
 protected:
 
@@ -134,7 +134,6 @@ private:
 
 	virtual void computefx();
 	virtual void computeA();
-	virtual void updateCoords();
 
 };
 #endif

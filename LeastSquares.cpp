@@ -10,7 +10,10 @@ LeastSquares::LeastSquares()
 	clear();
 	isdebug = false;
 	isquiet = false;
+	snoop=false;
 	aprior = 1;
+	apost = -1;
+
 }
 void LeastSquares::clear()
 {
@@ -318,7 +321,9 @@ void LeastSquares::iterate()
 	computeClh();//Clh
 	computeCvh();
 	computeErrorEllipse(Cxh);
-	dataSnoop();
+	if (snoop){
+		dataSnoop();
+	}
 
 
 
@@ -476,7 +481,6 @@ void LeastSquares::updateUnknowns()
 {
 	xh = x0 + d;
 	x0 = xh;
-	updateCoords();
 }
 
 void LeastSquares::computeResiduals()
@@ -496,7 +500,7 @@ void LeastSquares::computeDelta()
 	//d = VectorXd::Zero(u);
 	computeN();
 	computeU();
-	d = -1 * Ni * U;
+	d = Ni * U;
 
 }
 
@@ -552,7 +556,7 @@ void LeastSquares::dataSnoop()
 		for (int j = 0; j < int(blunders.size()); j++) {
 			for (int k = 0; k < int(blunders.size()); k++) {
 				rho(j, k) = Qv(j, k) / (sqrt(Qv(j, j))*sqrt(Qv(k, k)));
-				if (rho(j, k) > 1.0*pow(10, -4) && rho(j, k) < 1) { cout << "The "; }
+				if (rho(j, k) > 1.0*pow(10, -4) && rho(j, k) < 1) { continue; }
 			}
 		}
 		
@@ -581,11 +585,6 @@ double LeastSquares::getIter() {
 	return num_iter;
 }
 
-void LeastSquares::updateCoords()
-{
-	//This must be written before running the program. 
-	//This is not a general fuction
-}
 
 double LeastSquares::dist(double xi, double yi, double xj, double yj)
 {
