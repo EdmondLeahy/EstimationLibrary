@@ -512,7 +512,8 @@ void LeastSquares::computeClh()
 
 void LeastSquares::computeCvh()
 {
-	Cvh = apost * P.inverse() - Clh;
+//	Cvh = apost * P.inverse() - Clh;
+	Cvh = Clh - A*Cxh*A.transpose();
 
 }
 
